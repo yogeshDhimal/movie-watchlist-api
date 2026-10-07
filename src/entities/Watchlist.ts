@@ -24,16 +24,12 @@ export class Watchlist {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    @ManyToOne(() => User, (user) => user.watchlists, {
-        nullable: false,
-    })
-    @JoinColumn({ name: "userId" })
+    @ManyToOne(() => User, (user) => user.watchlists, { nullable: false })
+    @JoinColumn({ name: "userId" }) //foreign key
     user!: User;
 
-    @ManyToOne(() => Movie, (movie) => movie.watchlists, {
-        nullable: false,
-    })
-    @JoinColumn({ name: "movieId" })
+    @ManyToOne(() => Movie, (movie) => movie.watchlists, { nullable: false })
+    @JoinColumn({ name: "movieId" }) //foreign key 
     movie!: Movie;
 
     @Column({

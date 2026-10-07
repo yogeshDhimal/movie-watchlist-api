@@ -7,8 +7,10 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
+    OneToOne
 } from "typeorm";
 import { Watchlist } from "./Watchlist.js";
+import { OAuthAccount } from "./OAuthAccount.js";
 
 export enum UserRole {
     USER = "USER",
@@ -38,6 +40,9 @@ export class User {
 
     @OneToMany(() => Watchlist, (watchlist) => watchlist.user)
     watchlists!: Watchlist[];
+
+    @OneToOne(() => OAuthAccount, (oAuthAccount) => oAuthAccount.user)
+    oAuthAccount!: OAuthAccount;
 
     @CreateDateColumn({ type: "timestamptz" })
     createdAt!: Date;
