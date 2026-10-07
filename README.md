@@ -1,2 +1,0 @@
-# movie-watchlist-api
-
