@@ -1,6 +1,14 @@
 
 
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from "typeorm";
+import { Watchlist } from "./Watchlist.js";
 
 @Entity("movies")
 export class Movie {
@@ -21,6 +29,9 @@ export class Movie {
 
     @Column({ type: "varchar" })
     posterUrl!: string;
+
+    @OneToMany(() => Watchlist, (watchlist) => watchlist.movie)
+    watchlists!: Watchlist[];
 
     @CreateDateColumn({ type: "timestamptz" })
     createdAt!: Date;

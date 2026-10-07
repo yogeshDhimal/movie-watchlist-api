@@ -4,9 +4,11 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from "typeorm";
+import { Watchlist } from "./Watchlist.js";
 
 export enum UserRole {
     USER = "USER",
@@ -33,6 +35,9 @@ export class User {
         default: UserRole.USER,
     })
     role!: UserRole;
+
+    @OneToMany(() => Watchlist, (watchlist) => watchlist.user)
+    watchlists!: Watchlist[];
 
     @CreateDateColumn({ type: "timestamptz" })
     createdAt!: Date;
