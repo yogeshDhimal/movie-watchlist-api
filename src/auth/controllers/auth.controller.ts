@@ -2,8 +2,8 @@
 
 import { Request, Response } from "express";
 import { ZodError } from "zod";
-import { registerSchema } from "../schemas/auth.schema.js";
-import { registerUser } from "../services/auth.service.js";
+import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
+import { loginUser, registerUser } from "../services/auth.service.js";
 
 export const registerUserController = async (req: Request, res: Response) => {
     try {
@@ -38,3 +38,37 @@ export const registerUserController = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const loginUserController = async (req: Request, res: Response) => {
+    try {
+        const validatedData = loginSchema.parse(req.body);
+
+        const result = await loginUser(validatedData);
+
+        return res.status(200).json({
+            ...result, //because loginuser service is returning both user and token. 
+            success: true
+        });
+    } catch (error) {
+        if (error instanceof ZodError) {
+            const errors = error.issues.map((issue) => issue.message);
+
+            return res.status(400).json({
+                success: false,
+                errors,
+            });
+        }
+
+        if (error instanceof Error) { // service ma deko error lai handle garxa yesle. 
+            return res.status(401).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
