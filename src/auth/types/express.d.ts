@@ -1,11 +1,11 @@
 
 
-import { User } from "../../entities/User.js";
+import { User as UserEntity } from "../../entities/User.js";
 
 declare global {
     namespace Express {
-        interface Request {
-            user: User;
-        }
+        interface User extends UserEntity { }
     }
 }
+
+export { };

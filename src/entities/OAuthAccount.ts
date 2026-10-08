@@ -1,8 +1,9 @@
 
 
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, Unique } from "typeorm";
 import { User } from "./User.js";
 
+@Unique(["provider", "providerAccountId"])
 @Entity("oauth_accounts")
 export class OAuthAccount {
     @PrimaryGeneratedColumn("uuid")
