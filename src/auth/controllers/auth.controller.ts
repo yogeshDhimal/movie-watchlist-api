@@ -1,0 +1,40 @@
+
+
+import { Request, Response } from "express";
+import { ZodError } from "zod";
+import { registerSchema } from "../schemas/auth.schema.js";
+import { registerUser } from "../services/auth.service.js";
+
+export const registerUserController = async (req: Request, res: Response) => {
+    try {
+        const validatedData = registerSchema.parse(req.body);
+
+        const user = await registerUser(validatedData);
+
+        return res.status(201).json({
+            user,
+            success: true,
+        });
+    } catch (error) {
+        if (error instanceof ZodError) {
+            const errors = error.issues.map((issue) => issue.message);
+
+            return res.status(400).json({
+                success: false,
+                errors,
+            });
+        }
+
+        if (error instanceof Error) { // service ma deko error lai handle garxa yesle. 
+            return res.status(409).json({
+                success: false,
+                message: error.message,
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
