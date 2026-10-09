@@ -21,10 +21,6 @@ router.get("/me", authMiddleware, getCurrentUserController);
 
 router.get(
     "/google",
-    (req, res, next) => {
-        console.log("Google auth route reached");
-        next();
-    },
     passport.authenticate("google", {
         scope: ["profile", "email"],
     })
